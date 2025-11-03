@@ -17,7 +17,10 @@ class Particle:
         self.mass = mass
         self.type_ = type_  # 'gas', 'moon', 'planet', 'star'
         self.sphere = sphere(pos=self.pos, radius=self.get_radius(), color=self.get_color(), emissive=self.get_emissive())
-        if self.type_ == 'star':
+        if self.type_ == 'planet':
+            self.atmosphere = sphere(pos=self.pos, radius=self.get_radius() * 1.2, color=color.cyan, opacity=0.4, shininess=1)
+        elif self.type_ == 'star':
+            self.corona = sphere(pos=self.pos, radius=self.get_radius() * 1.5, color=color.orange, opacity=0.6, emissive=True)
             self.light = distant_light(direction=self.pos, color=color.white)
         self.halo = sphere(pos=self.pos, radius=self.get_halo_radius(), color=color.purple, opacity=0.3, visible=False)
         self.label = label(pos=self.pos, text=self.get_description(), visible=False, height=16, color=color.white, box=False)
@@ -71,16 +74,27 @@ class Particle:
         self.sphere.radius = self.get_radius()
         self.sphere.color = self.get_color()
         self.sphere.emissive = self.get_emissive()
+        if self.type_ == 'planet':
+            if hasattr(self, 'atmosphere'):
+                self.atmosphere.pos = self.pos
+                self.atmosphere.radius = self.get_radius() * 1.2
+            else:
+                self.atmosphere = sphere(pos=self.pos, radius=self.get_radius() * 1.2, color=color.cyan, opacity=0.4, shininess=1)
+        elif self.type_ == 'star':
+            if hasattr(self, 'corona'):
+                self.corona.pos = self.pos
+                self.corona.radius = self.get_radius() * 1.5
+            else:
+                self.corona = sphere(pos=self.pos, radius=self.get_radius() * 1.5, color=color.orange, opacity=0.6, emissive=True)
+            if hasattr(self, 'light'):
+                self.light.direction = self.pos
+            else:
+                self.light = distant_light(direction=self.pos, color=color.white)
         self.halo.pos = self.pos
         self.halo.radius = self.get_halo_radius()
         self.halo.visible = True
         self.label.pos = self.pos + vector(0, self.get_radius() + 0.5, 0)  # Position label above the object
         self.label.text = self.get_description()
-        if self.type_ == 'star':
-            if hasattr(self, 'light'):
-                self.light.direction = self.pos
-            else:
-                self.light = distant_light(direction=self.pos, color=color.white)
 
 # Initialize particles
 particles = []
@@ -156,6 +170,10 @@ while True:
                     particles[i].vel = (particles[i].vel * particles[i].mass + particles[j].vel * particles[j].mass) / (2 * particles[i].mass)
                     particles[j].sphere.visible = False
                     particles[j].halo.visible = False
+                    if hasattr(particles[j], 'atmosphere'):
+                        particles[j].atmosphere.visible = False
+                    if hasattr(particles[j], 'corona'):
+                        particles[j].corona.visible = False
                     if hasattr(particles[j], 'light'):
                         particles[j].light.visible = False
                     merged.add(j)
@@ -164,6 +182,10 @@ while True:
                     particles[j].vel = (particles[j].vel * particles[j].mass + particles[i].vel * particles[i].mass) / (2 * particles[j].mass)
                     particles[i].sphere.visible = False
                     particles[i].halo.visible = False
+                    if hasattr(particles[i], 'atmosphere'):
+                        particles[i].atmosphere.visible = False
+                    if hasattr(particles[i], 'corona'):
+                        particles[i].corona.visible = False
                     if hasattr(particles[i], 'light'):
                         particles[i].light.visible = False
                     merged.add(i)
