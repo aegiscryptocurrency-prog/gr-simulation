@@ -6,7 +6,7 @@ import math
 G = 6.67430e-11  # Gravitational constant (scaled for simulation)
 c = 3e8  # Speed of light (for relativistic corrections)
 dt = 0.01  # Time step
-num_particles = 100  # Initial number of gas particles
+num_particles = 50  # Initial number of gas particles
 scene = canvas(title="GR Simulation", width=800, height=600, background=color.black)
 
 # Particle class
@@ -93,7 +93,7 @@ speed_slider = slider(min=0.1, max=5.0, value=1.0, bind=set_speed)
 
 # Physics loop
 while True:
-    rate(60)
+    rate(30)
     if running:
         # Calculate forces
         forces = [vector(0,0,0) for _ in particles]
