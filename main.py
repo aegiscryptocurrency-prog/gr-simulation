@@ -18,7 +18,7 @@ class Particle:
         self.type_ = type_  # 'gas', 'moon', 'planet', 'star'
         self.sphere = sphere(pos=self.pos, radius=self.get_radius(), color=self.get_color(), emissive=self.get_emissive())
         if self.type_ == 'planet':
-            self.atmosphere = sphere(pos=self.pos, radius=self.get_radius() * 1.2, color=color.cyan, opacity=0.4, shininess=1)
+            self.atmosphere = sphere(pos=self.pos, radius=self.get_radius() * 1.2, color=color.cyan, opacity=0.4, shininess=1, emissive=True)
         elif self.type_ == 'star':
             self.corona = sphere(pos=self.pos, radius=self.get_radius() * 1.5, color=color.orange, opacity=0.6, emissive=True)
             self.light = distant_light(direction=self.pos, color=color.white)
@@ -79,7 +79,7 @@ class Particle:
                 self.atmosphere.pos = self.pos
                 self.atmosphere.radius = self.get_radius() * 1.2
             else:
-                self.atmosphere = sphere(pos=self.pos, radius=self.get_radius() * 1.2, color=color.cyan, opacity=0.4, shininess=1)
+                self.atmosphere = sphere(pos=self.pos, radius=self.get_radius() * 1.2, color=color.cyan, opacity=0.4, shininess=1, emissive=True)
         elif self.type_ == 'star':
             if hasattr(self, 'corona'):
                 self.corona.pos = self.pos
