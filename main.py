@@ -20,6 +20,8 @@ class Particle:
         if self.type_ == 'star':
             self.light = distant_light(direction=self.pos, color=color.white)
         self.halo = sphere(pos=self.pos, radius=self.get_halo_radius(), color=color.purple, opacity=0.3, visible=False)
+        self.label = label(pos=self.pos, text=self.get_description(), visible=False, height=16, color=color.white, box=False)
+        scene.bind('mousemove', self.check_mouseover)
 
     def get_radius(self):
         if self.type_ == 'gas':
@@ -47,6 +49,23 @@ class Particle:
     def get_halo_radius(self):
         return self.get_radius() * 3
 
+    def get_description(self):
+        return f"{self.type_.capitalize()} (Mass: {self.mass:.2f})"
+
+    def show_label(self, evt):
+        self.label.visible = True
+
+    def hide_label(self, evt):
+        self.label.visible = False
+
+    def check_mouseover(self, evt):
+        mouse_pos = scene.mouse.pos
+        dist = mag(mouse_pos - self.pos)
+        if dist < self.get_radius():
+            self.show_label(evt)
+        else:
+            self.hide_label(evt)
+
     def update_visual(self):
         self.sphere.pos = self.pos
         self.sphere.radius = self.get_radius()
@@ -55,6 +74,8 @@ class Particle:
         self.halo.pos = self.pos
         self.halo.radius = self.get_halo_radius()
         self.halo.visible = True
+        self.label.pos = self.pos + vector(0, self.get_radius() + 0.5, 0)  # Position label above the object
+        self.label.text = self.get_description()
         if self.type_ == 'star':
             if hasattr(self, 'light'):
                 self.light.direction = self.pos
