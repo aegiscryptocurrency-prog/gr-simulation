@@ -64,8 +64,8 @@ class Particle:
 # Initialize particles
 particles = []
 for _ in range(num_particles):
-    pos = [random.uniform(-10, 10) for _ in range(3)]
-    vel = [random.uniform(-1, 1) for _ in range(3)]
+    pos = vector(random.uniform(-10, 10), random.uniform(-10, 10), random.uniform(-10, 10))
+    vel = vector(random.uniform(-1, 1), random.uniform(-1, 1), random.uniform(-1, 1))
     mass = random.uniform(0.1, 1.0)
     particles.append(Particle(pos, vel, mass, 'gas'))
 
