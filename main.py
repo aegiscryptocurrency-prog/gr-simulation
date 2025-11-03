@@ -3,7 +3,7 @@ import random
 import math
 
 # Constants
-G = 6.67430e-11  # Gravitational constant (scaled for simulation)
+G = 6.67430e-1  # Gravitational constant (scaled for simulation)
 c = 3e8  # Speed of light (for relativistic corrections)
 dt = 0.01  # Time step
 num_particles = 50  # Initial number of gas particles
@@ -89,7 +89,7 @@ def set_speed(s):
     global speed
     speed = s.value
 
-speed_slider = slider(min=0.1, max=10.0, value=1.0, bind=set_speed)
+speed_slider = slider(min=0.1, max=50.0, value=1.0, bind=set_speed)
 
 # Physics loop
 while True:
