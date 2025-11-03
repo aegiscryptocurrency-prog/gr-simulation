@@ -22,7 +22,7 @@ class Particle:
         elif self.type_ == 'star':
             self.corona = sphere(pos=self.pos, radius=self.get_radius() * 1.5, color=color.orange, opacity=0.6, emissive=True)
             self.light = distant_light(direction=self.pos, color=color.white)
-        self.halo = sphere(pos=self.pos, radius=self.get_halo_radius(), color=color.purple, opacity=0.3, visible=False)
+        self.halo = sphere(pos=self.pos, radius=self.get_halo_radius(), color=color.purple, opacity=0.4, emissive=True, shininess=0.5, visible=False)
         self.label = label(pos=self.pos, text=self.get_description(), visible=False, height=16, color=color.white, box=False)
         scene.bind('mousemove', self.check_mouseover)
 
