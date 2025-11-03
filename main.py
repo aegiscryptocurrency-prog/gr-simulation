@@ -73,12 +73,17 @@ for _ in range(num_particles):
 running = False
 speed = 1.0
 
-def start_pause(b):
+def start_simulation(b):
     global running
-    running = not running
-    b.text = "Pause" if running else "Start"
+    running = True
 
-start_button = button(text="Start", bind=start_pause)
+start_button = button(text="Start", bind=start_simulation)
+
+def pause_simulation(b):
+    global running
+    running = False
+
+pause_button = button(text="Pause", bind=pause_simulation)
 
 def set_speed(s):
     global speed
